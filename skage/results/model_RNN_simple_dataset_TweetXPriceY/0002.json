@@ -1,0 +1,25 @@
+{
+    "Dataclass": "TweetXPriceY",
+    "Model": "RNN_simple",
+    "Config": {
+        "train_start_date": "2014-01-01",
+        "train_end_date": "2015-08-01",
+        "eval_start_date": "2015-10-01",
+        "eval_end_date": "2016-01-01",
+        "loss_func": "BCELoss",
+        "optimizer": "Adam",
+        "EPOCHS": 10,
+        "LEARNING_RATE": 0.001,
+        "vocab_size": 30522,
+        "vocab_method": "bert_base_uncased pretrained tokenizer with 30522 vocab size",
+        "rnn_hidden_size": 126,
+        "rnn_hidden_layers": 2,
+        "dataset_loader_args": {
+            "twitter_root": "/root/projects/ikt450_deep-neural-networks/stocknet-project-ikt450/dataset/tweet/preprocessed-json",
+            "price_root": "/root/projects/ikt450_deep-neural-networks/stocknet-project-ikt450/dataset/price/preprocessed/csv",
+            "day_lag": 10,
+            "tweets_per_day": 10,
+            "words_per_tweet": 30
+        }
+    }
+}
