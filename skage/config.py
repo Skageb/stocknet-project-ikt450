@@ -14,7 +14,7 @@ class Config:
         self.loss_func = nn.CrossEntropyLoss
         self.optimizer = optim.Adam
 
-        self.EPOCHS = 16
+        self.EPOCHS = 30
         self.LEARNING_RATE = 0.0001
 
         self.vocab_size = 30_522

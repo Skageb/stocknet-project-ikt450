@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from config_price_history_only import cfg
 from sklearn.preprocessing import LabelEncoder
-
+import numpy as np
 
 def get_stock_data(path, start_date, end_date) -> pd.DataFrame:
     
@@ -64,7 +64,7 @@ def get_valid_dataframe(split) -> pd.DataFrame:
     
 
 
-def create_rnn_input(df):
+def create_rnn_input_old(df):
     # Ensure 'Date' column is in datetime format
     df['Date'] = pd.to_datetime(df['Date'])
 
@@ -116,3 +116,64 @@ def create_rnn_input(df):
     y = y.to_numpy()
 
     return x, y
+
+
+def normalize_per_stock(df):
+    """
+    Normalize 'Open' and 'Close' prices stock-wise (per stock group).
+    """
+    df_normalized = df.copy()
+
+    # Group by 'Name' (stock) and normalize within each group
+    for feature in ['Open', 'Close']:
+        df_normalized[feature] = df.groupby('Name')[feature].transform(
+            lambda x: (x - x.mean()) / x.std()
+        )
+
+    return df_normalized
+
+def create_rnn_input(df):
+    # Ensure 'Date' column is in datetime format
+    df['Date'] = pd.to_datetime(df['Date'])
+
+    # Sort the DataFrame by 'Name' and 'Date'
+    df = df.sort_values(['Name', 'Date']).reset_index(drop=True)
+
+    # Initialize lists for inputs (x) and labels (y)
+    x_data = []
+    y_data = []
+
+    # Encode the 'Name' column (stock names)
+    name_encoder = LabelEncoder()
+    df['Name'] = name_encoder.fit_transform(df['Name'])
+
+    # Group the DataFrame by 'Name' (stock)
+    grouped = df.groupby('Name')
+
+    # For each stock group
+    for name, group in grouped:
+        group = group.sort_values('Date').reset_index(drop=True)
+
+        # Skip if the group has less than 6 rows (need at least 5 days of history)
+        if len(group) < 6:
+            continue
+
+        # Iterate over the group starting from the 5th index
+        for idx in range(5, len(group)):
+            # Get the previous 5 trading days
+            prev_data = group.iloc[idx-5:idx]
+
+            # Extract Open and Close prices from the previous 5 days as features
+            features = prev_data[['Open', 'Close']].to_numpy()  # Shape: (5, 2)
+
+            # Append to x_data
+            x_data.append(features)
+
+            # Append the target label to y_data
+            y_data.append(group.loc[idx, 'Label'])
+
+    # Convert lists to numpy arrays
+    x_data = np.array(x_data)  # Shape: (num_samples, seq_length, input_size)
+    y_data = np.array(y_data)  # Shape: (num_samples,)
+
+    return x_data, y_data

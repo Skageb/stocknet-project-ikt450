@@ -154,8 +154,8 @@ def train(model, cfg, train_data, train_dataloader, eval_dataloader, trial=None)
 
 def objective(trial):
     # Suggest hyperparameters
-    learning_rate = trial.suggest_loguniform('LEARNING_RATE', 1e-6, 1e-3)
-    rnn_hidden_size = trial.suggest_categorical('rnn_hidden_size', [64, 128, 256])
+    learning_rate = trial.suggest_loguniform('LEARNING_RATE', 1e-6, 5e-4)
+    rnn_hidden_size = trial.suggest_categorical('rnn_hidden_size', [64, 128, 256, 400])
     rnn_hidden_layers = trial.suggest_int('rnn_hidden_layers', 2, 4)
     #day_lag = trial.suggest_int('day_lag', 3, 7)
     #tweets_per_day = trial.suggest_int('tweets_per_day', 2, 5)
@@ -201,6 +201,8 @@ def objective(trial):
     #Train the model
     log_object = train(model, cfg, train_dataset, train_dataloader, eval_dataloader, trial=trial)
 
+    trial.set_user_attr('loss', log_object['Report from Training']['loss_across_epochs'])
+
     # Evaluate the model
     accuracy_eval, y, y_hat, y_hat_logits = evaluate_model(eval_dataloader, model)
     accuracy_train, _, _, _ = evaluate_model(train_dataloader, model)
@@ -243,10 +245,10 @@ if __name__ == '__main__':
 
     # Create Optuna study
     pruner = optuna.pruners.MedianPruner(
-        n_startup_trials=2, n_warmup_steps=0, interval_steps=2
+        n_startup_trials=3, n_warmup_steps=10, interval_steps=5
     )
     study = optuna.create_study(
-        study_name='XTweetYPrice',
+        study_name='XTweetYPrice-30Epochs',
         direction='maximize',  # or 'minimize' depending on your objective
         pruner=pruner,
         storage=storage_name,
@@ -254,7 +256,9 @@ if __name__ == '__main__':
     )
 
     # Run optimization
-    study.optimize(objective, n_trials=10, timeout=3600)
+    study.optimize(objective, n_trials=10)
+
+    print(f"Number of trials after optimization: {len(study.trials)}")
 
     # Print the best trial
     print("Best trial:")
