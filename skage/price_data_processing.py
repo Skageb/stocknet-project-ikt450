@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from config_price_history_only import cfg
+from skage.config import cfg
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 

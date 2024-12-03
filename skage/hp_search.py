@@ -5,12 +5,13 @@ from torch.utils.data import DataLoader
 import optuna
 from tqdm import tqdm
 from time import time
-from sklearn.metrics import f1_score, precision_score, recall_score
+from sklearn.metrics import f1_score, precision_score, recall_score, matthews_corrcoef
 
 from config import cfg
 from dataset_loaders import TweetXPriceY
-from models import LSTM_v1
+from models import LSTM_v1, Two_Layer_LSTM, Shallow_First_GRU, GRU_Deep, GRU_shallow, GRU_Shallow_1fc, GRU_Shallow_2fc, GRU_Shallow_3fc
 from utils import write_log_to_file, log_config, generate_training_plot_from_file, logable_config
+import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -26,10 +27,17 @@ def evaluate_model(dataloader, model):
 
     with torch.no_grad():
         for batch_idx, (x, y) in enumerate(tqdm(dataloader)):
-            x, y = x.to(device), y.to(device)
-            x = x.float()
-            #x = x.view(x.size(0), x.size(1), -1)  # Ensure input shape is (batch_size, seq_length, input_size)
-            x = x.view(x.size(0), -1)
+            if isinstance(x, list):
+                x = [t.to(device) for t in x]
+                x = [t.float() for t in x]
+                y = y.to(device)
+            else:
+                x, y = x.to(device), y.to(device)
+
+                x = x.float()
+                    #x = x.view(x.size(0), x.size(1), -1)  # Ensure input shape is (batch_size, seq_length, input_size)
+                x = x.view(x.size(0), -1)
+            
 
             outputs = model(x)  # Outputs are raw logits of shape (batch_size, num_classes)
             _, predicted = torch.max(outputs.data, 1)
@@ -60,8 +68,14 @@ def evaluate_model(dataloader, model):
 
 def train(model, cfg, train_data, train_dataloader, eval_dataloader, trial=None):
     
-
     criterion = cfg.loss_func()
+    if cfg.weighted_loss:
+        labels = torch.cat([y.cpu() for x, y in train_dataloader]).numpy()
+        label_weights = torch.tensor([1/(np.sum(labels)-len(labels)), 1/np.sum(labels)], device=device)
+        criterion = cfg.loss_func(weight=label_weights)
+
+
+
     optimizer = cfg.optimizer(model.parameters(), lr=cfg.LEARNING_RATE)
 
     EPOCHS = cfg.EPOCHS
@@ -80,12 +94,17 @@ def train(model, cfg, train_data, train_dataloader, eval_dataloader, trial=None)
         model.train()
 
         for batch_idx, (x, y) in enumerate(tqdm(train_dataloader)):
-            x, y = x.to(device), y.to(device)
+            if isinstance(x, list):
+                x = [t.to(device) for t in x]
+                x = [t.float() for t in x]
+                y = y.to(device)
+            else:
+                x, y = x.to(device), y.to(device)
 
+                x = x.float()
+                    #x = x.view(x.size(0), x.size(1), -1)  # Ensure input shape is (batch_size, seq_length, input_size)
+                x = x.view(x.size(0), -1)
 
-            x = x.int()
-
-            x = x.view(x.size(0), -1)  # (32, 5, 60)
             #print(x.shape)
             outputs = model(x).squeeze()
             #Extracting predictions to evaluate test set performance
@@ -154,46 +173,42 @@ def train(model, cfg, train_data, train_dataloader, eval_dataloader, trial=None)
 
 def objective(trial):
     # Suggest hyperparameters
-    learning_rate = trial.suggest_loguniform('LEARNING_RATE', 1e-6, 5e-4)
-    rnn_hidden_size = trial.suggest_categorical('rnn_hidden_size', [64, 128, 256, 400])
-    rnn_hidden_layers = trial.suggest_int('rnn_hidden_layers', 2, 4)
+    learning_rate = trial.suggest_float('LEARNING_RATE', 1e-6, 1e-2)
     #day_lag = trial.suggest_int('day_lag', 3, 7)
     #tweets_per_day = trial.suggest_int('tweets_per_day', 2, 5)
     #words_per_tweet = trial.suggest_int('words_per_tweet', 15, 50)
     
     # Update configuration
     cfg.LEARNING_RATE = learning_rate
-    cfg.rnn_hidden_size = rnn_hidden_size
-    cfg.rnn_hidden_layers = rnn_hidden_layers
     #cfg.dataset_loader_args['day_lag'] = day_lag
     #cfg.dataset_loader_args['tweets_per_day'] = tweets_per_day
     #cfg.dataset_loader_args['words_per_tweet'] = words_per_tweet
 
     # Initialize dataset and dataloaders
-    train_dataset = TweetXPriceY(
+    train_dataset = cfg.dataloader(
         start_date=cfg.train_start_date,
         end_date=cfg.train_end_date,
-        day_lag=cfg.dataset_loader_args['day_lag'],
-        tweets_per_day=cfg.dataset_loader_args['tweets_per_day'],
-        words_per_tweet=cfg.dataset_loader_args['words_per_tweet'],
-        twitter_root=cfg.dataset_loader_args['twitter_root'],
-        price_root=cfg.dataset_loader_args['price_root']
+        **cfg.dataset_loader_args
     )
-    val_dataset = TweetXPriceY(
+    val_dataset = cfg.dataloader(
         start_date=cfg.eval_start_date,
         end_date=cfg.eval_end_date,
-        day_lag=cfg.dataset_loader_args['day_lag'],
-        tweets_per_day=cfg.dataset_loader_args['tweets_per_day'],
-        words_per_tweet=cfg.dataset_loader_args['words_per_tweet'],
-        twitter_root=cfg.dataset_loader_args['twitter_root'],
-        price_root=cfg.dataset_loader_args['price_root']
+        **cfg.dataset_loader_args
     )
 
-    train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    eval_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+    test_dataset = cfg.dataloader(
+        start_date=cfg.test_start_date,
+        end_date=cfg.test_end_date,
+        **cfg.dataset_loader_args
+    )
+
+
+    train_dataloader = DataLoader(train_dataset, batch_size=cfg.BATCH_SIZE, num_workers=cfg.num_workers, shuffle=True)
+    eval_dataloader = DataLoader(val_dataset, batch_size=cfg.BATCH_SIZE, num_workers=cfg.num_workers,shuffle=False)
+    test_dataloader = DataLoader(test_dataset, batch_size=cfg.BATCH_SIZE, num_workers=cfg.num_workers,shuffle=False)
 
     # Initialize model, criterion, and optimizer
-    model = LSTM_v1(cfg).to(device)
+    model = cfg.model(cfg, train_dataset.get_input_size()).to(device)
     
     trial.set_user_attr('model_class', type(model).__name__)
     trial.set_user_attr('dataset_class', type(train_dataset).__name__)
@@ -204,23 +219,27 @@ def objective(trial):
     trial.set_user_attr('loss', log_object['Report from Training']['loss_across_epochs'])
 
     # Evaluate the model
-    accuracy_eval, y, y_hat, y_hat_logits = evaluate_model(eval_dataloader, model)
-    accuracy_train, _, _, _ = evaluate_model(train_dataloader, model)
+    accuracy_test, y, y_hat, y_hat_logits = evaluate_model(test_dataloader, model)
+    accuracy_train = log_object['Report from Training']['train_accuracy_per_epoch'][-1]
+    accuracy_eval = log_object['Report from Training']['eval_accuracy_per_epoch'][-1]
 
     F1 = f1_score(y, y_hat)
     precision = precision_score(y, y_hat)
     recall = recall_score(y, y_hat)
+    MCC = matthews_corrcoef(y, y_hat)
 
 
-    log_object['Results'] = {
-        'accuracy_eval': accuracy_eval,
+    log_object['Results Testset'] = {
+        'accuracy_test': accuracy_test,
         'accuracy_train': accuracy_train,
-        'F1_eval': F1,
-        'precision_eval': precision,
-        'recall_eval': recall,
-        'y_eval': y.tolist(),
-        'y_hat_eval': y_hat.tolist(),
-        'y_hat_logits_eval': y_hat_logits.tolist()
+        'accuracy_eval': accuracy_eval,
+        'F1_test': F1,
+        'MCC_test': MCC,
+        'precision_test': precision,
+        'recall_test': recall,
+        'y_test': y.tolist(),
+        'y_hat_test': y_hat.tolist(),
+        'y_hat_logits_test': y_hat_logits.tolist()
     }
 
     #Extensive logging of trial
@@ -234,7 +253,7 @@ def objective(trial):
 
     generate_training_plot_from_file(created_file_path)
 
-    return accuracy_eval  # Or `return -val_accuracy` if you prefer to maximize accuracy
+    return log_object['Report from Training']['eval_accuracy_per_epoch'][-1]  # Or `return -val_accuracy` if you prefer to maximize accuracy
 
 if __name__ == '__main__':
     # Set device
@@ -242,29 +261,31 @@ if __name__ == '__main__':
 
     # Create a storage URL for the SQLite database
     storage_name = 'sqlite:///Stocknet.db'
+    for model in [GRU_Shallow_2fc, GRU_Shallow_3fc]:#[GRU_shallow, GRU_Deep]:
+        cfg.model = model
+        #Create Optuna study
+        pruner = optuna.pruners.MedianPruner(
+            n_startup_trials=2, n_warmup_steps=7, interval_steps=5
+        )
+        study = optuna.create_study(
+            study_name=f"model_{cfg.model.__name__}_dataset_{cfg.dataloader.__name__}",
+            direction='maximize',  # or 'minimize' depending on your objective
+            #pruner=pruner,
+            storage=storage_name,
+            load_if_exists=True  # Load the study if it already exists
+        )
 
-    # Create Optuna study
-    pruner = optuna.pruners.MedianPruner(
-        n_startup_trials=3, n_warmup_steps=10, interval_steps=5
-    )
-    study = optuna.create_study(
-        study_name='XTweetYPrice-30Epochs',
-        direction='maximize',  # or 'minimize' depending on your objective
-        pruner=pruner,
-        storage=storage_name,
-        load_if_exists=True  # Load the study if it already exists
-    )
+        # Run optimization
+        study.optimize(objective, n_trials=10)
 
-    # Run optimization
-    study.optimize(objective, n_trials=10)
+        print(f"Number of trials after optimization: {len(study.trials)}")
 
-    print(f"Number of trials after optimization: {len(study.trials)}")
+        # Print the best trial
+        print("Best trial:")
+        trial = study.best_trial
 
-    # Print the best trial
-    print("Best trial:")
-    trial = study.best_trial
-
-    print(f"  Validation Loss: {trial.value}")
-    print("  Hyperparameters:")
-    for key, value in trial.params.items():
-        print(f"    {key}: {value}")
+        print(f"  Validation Loss: {trial.value}")
+        print("  Hyperparameters:")
+        for key, value in trial.params.items():
+            print(f"    {key}: {value}")
+        
