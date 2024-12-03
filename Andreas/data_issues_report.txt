@@ -1,0 +1,528 @@
+Company: AAPL
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 2, 'open_price': 2, 'high_price': 0, 'low_price': 1, 'close_price': 2, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: ABB
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 29, 'open_price': 3, 'high_price': 1, 'low_price': 0, 'close_price': 29, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: ABBV
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 1, 'high_price': 0, 'low_price': 1, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 527
+
+Company: AEP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 2, 'high_price': 0, 'low_price': 0, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: AGFS
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 78, 'open_price': 136, 'high_price': 66, 'low_price': 65, 'close_price': 78, 'volume': 48}
+  missing_dates_in_range: 316
+
+Company: AMGN
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 1, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 1, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: AMZN
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 0, 'open_price': 11, 'high_price': 6, 'low_price': 7, 'close_price': 0, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BA
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 4, 'open_price': 2, 'high_price': 0, 'low_price': 0, 'close_price': 4, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BABA
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 3, 'open_price': 19, 'high_price': 11, 'low_price': 6, 'close_price': 3, 'volume': 0}
+  missing_dates_in_range: 332
+
+Company: BAC
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 33, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 33, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BBL
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 1, 'high_price': 0, 'low_price': 1, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BCH
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 2, 'high_price': 1, 'low_price': 0, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BHP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 5, 'high_price': 0, 'low_price': 2, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 22, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 21, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BRK-A
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 3, 'open_price': 41, 'high_price': 11, 'low_price': 5, 'close_price': 3, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BSAC
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 22, 'open_price': 5, 'high_price': 1, 'low_price': 0, 'close_price': 22, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: BUD
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 6, 'open_price': 1, 'high_price': 1, 'low_price': 0, 'close_price': 6, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: C
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 4, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 4, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CAT
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 1, 'high_price': 1, 'low_price': 0, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CELG
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 3, 'open_price': 16, 'high_price': 9, 'low_price': 9, 'close_price': 3, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CHL
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 6, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 6, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CHTR
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 6, 'open_price': 21, 'high_price': 2, 'low_price': 5, 'close_price': 6, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CMCSA
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 8, 'open_price': 1, 'high_price': 1, 'low_price': 1, 'close_price': 8, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CODI
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 60, 'open_price': 13, 'high_price': 5, 'low_price': 0, 'close_price': 60, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CSCO
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 24, 'open_price': 4, 'high_price': 0, 'low_price': 3, 'close_price': 24, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: CVX
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 1, 'high_price': 1, 'low_price': 0, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: D
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 11, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 11, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: DHR
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 8, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 8, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: DIS
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 7, 'open_price': 0, 'high_price': 0, 'low_price': 1, 'close_price': 7, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: DUK
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 14, 'open_price': 2, 'high_price': 0, 'low_price': 0, 'close_price': 14, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: EXC
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 14, 'open_price': 2, 'high_price': 1, 'low_price': 1, 'close_price': 14, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: FB
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 22, 'high_price': 6, 'low_price': 13, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: GD
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 3, 'high_price': 0, 'low_price': 0, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: GE
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 20, 'open_price': 5, 'high_price': 3, 'low_price': 1, 'close_price': 20, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: GMRE
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 8, 'high_price': 2, 'low_price': 1, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 132
+
+Company: GOOG
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 0, 'open_price': 8, 'high_price': 4, 'low_price': 4, 'close_price': 0, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: HD
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: HON
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 2, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 2, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: HRG
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 37, 'open_price': 91, 'high_price': 24, 'low_price': 17, 'close_price': 37, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: HSBC
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 14, 'open_price': 1, 'high_price': 1, 'low_price': 0, 'close_price': 14, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: IEP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 11, 'open_price': 2, 'high_price': 3, 'low_price': 0, 'close_price': 11, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: INTC
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 15, 'open_price': 0, 'high_price': 0, 'low_price': 1, 'close_price': 15, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: JNJ
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: JPM
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 0, 'high_price': 2, 'low_price': 0, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: KO
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 21, 'open_price': 6, 'high_price': 1, 'low_price': 2, 'close_price': 21, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: LMT
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 1, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 1, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MA
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 2, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 2, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MCD
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MDT
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 11, 'open_price': 4, 'high_price': 0, 'low_price': 0, 'close_price': 11, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MMM
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 3, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 3, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MO
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 15, 'open_price': 3, 'high_price': 0, 'low_price': 0, 'close_price': 15, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MRK
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 2, 'high_price': 0, 'low_price': 0, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: MSFT
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 16, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 16, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: NEE
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: NGG
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 12, 'open_price': 0, 'high_price': 2, 'low_price': 0, 'close_price': 12, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: NVS
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 8, 'open_price': 6, 'high_price': 1, 'low_price': 0, 'close_price': 8, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: ORCL
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 21, 'open_price': 2, 'high_price': 0, 'low_price': 0, 'close_price': 21, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PCG
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 13, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 13, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PCLN
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 0, 'open_price': 14, 'high_price': 1, 'low_price': 3, 'close_price': 0, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PEP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PFE
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 19, 'open_price': 1, 'high_price': 0, 'low_price': 1, 'close_price': 19, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PG
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 8, 'open_price': 3, 'high_price': 0, 'low_price': 1, 'close_price': 8, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PICO
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 28, 'open_price': 128, 'high_price': 27, 'low_price': 33, 'close_price': 28, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PM
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 7, 'open_price': 2, 'high_price': 0, 'low_price': 0, 'close_price': 7, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PPL
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 17, 'open_price': 5, 'high_price': 2, 'low_price': 2, 'close_price': 17, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: PTR
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 4, 'open_price': 0, 'high_price': 1, 'low_price': 1, 'close_price': 4, 'volume': 1}
+  missing_dates_in_range: 567
+
+Company: RDS-B
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 0, 'high_price': 1, 'low_price': 0, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: REX
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 90, 'high_price': 12, 'low_price': 18, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 567
+
+Company: SLB
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 3, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 3, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: SNP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 1, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 1, 'volume': 0}
+  missing_dates_in_range: 567
+
+Company: SNY
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 13, 'open_price': 5, 'high_price': 1, 'low_price': 1, 'close_price': 13, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: SO
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 21, 'open_price': 0, 'high_price': 0, 'low_price': 1, 'close_price': 21, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: SPLP
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 141, 'open_price': 47, 'high_price': 24, 'low_price': 40, 'close_price': 141, 'volume': 61}
+  missing_dates_in_range: 566
+
+Company: SRE
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 4, 'open_price': 3, 'high_price': 0, 'low_price': 0, 'close_price': 4, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: T
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 18, 'open_price': 6, 'high_price': 0, 'low_price': 1, 'close_price': 18, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: TM
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 9, 'open_price': 4, 'high_price': 2, 'low_price': 0, 'close_price': 9, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: TOT
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 12, 'open_price': 2, 'high_price': 1, 'low_price': 1, 'close_price': 12, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: TSM
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 24, 'open_price': 3, 'high_price': 2, 'low_price': 1, 'close_price': 24, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: UL
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 16, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 16, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: UN
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 16, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 16, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: UNH
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 7, 'open_price': 1, 'high_price': 0, 'low_price': 2, 'close_price': 7, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: UPS
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 1, 'high_price': 0, 'low_price': 0, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: UTX
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 10, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 10, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: V
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 5, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 5, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: VZ
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 8, 'open_price': 2, 'high_price': 0, 'low_price': 2, 'close_price': 8, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: WFC
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 16, 'open_price': 0, 'high_price': 0, 'low_price': 0, 'close_price': 16, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: WMT
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 8, 'open_price': 0, 'high_price': 0, 'low_price': 1, 'close_price': 8, 'volume': 0}
+  missing_dates_in_range: 566
+
+Company: XOM
+  missing_values: 0
+  missing_dates_column: 0
+  empty_features: {'date': 0, 'movement_percent': 6, 'open_price': 1, 'high_price': 1, 'low_price': 0, 'close_price': 6, 'volume': 0}
+  missing_dates_in_range: 566
+
