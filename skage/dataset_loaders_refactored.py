@@ -836,13 +836,35 @@ if __name__ == '__main__':
             "sentiment_model": 'nlptown/bert-base-multilingual-uncased-sentiment'
         }
 
-    dataset = dataset_class(
+    train_dataset = dataset_class(
     start_date=train_start_date,
     end_date=train_end_date,
     **dataset_loader_args
     )
 
-    debug_dataset(dataset)
+    eval_dataset = dataset_class(
+    start_date=eval_start_date,
+    end_date=eval_end_date,
+    **dataset_loader_args
+    )
+
+    test_dataset = dataset_class(
+    start_date=test_start_date,
+    end_date=test_end_date,
+    **dataset_loader_args
+    )
+
+    print('Debugging Trainset')
+    debug_dataset(train_dataset)
+
+    print('Debugging Evalset')
+    debug_dataset(eval_dataset)
+
+    print('Debugging Testset')
+    debug_dataset(test_dataset)
+
+    print(f'Number of trades test: {train_dataset.__len__()}\nNumber of trades eval: {eval_dataset.__len__()}\nNumber of trades test: {test_dataset.__len__()}')
+
 
 
                 

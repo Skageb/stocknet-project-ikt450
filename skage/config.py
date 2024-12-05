@@ -4,9 +4,10 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from models import LSTM_v1, Two_Layer_LSTM, Deeper_Two_Layer_LSTM, Deeper_Two_Layer_GRU, Depth_First_GRU, Depth_First_GRU2, Shallow_First_GRU
+from inital_models import LSTM_v1, Two_Layer_LSTM, Deeper_Two_Layer_LSTM, Deeper_Two_Layer_GRU, Depth_First_GRU, Depth_First_GRU2, Shallow_First_GRU
+from models import GRU_4_FC_3, LSTM_4_FC_3, GRU_Shallow_1fc_AntiOverfit
 from dataset_loaders_refactored import TweetXPriceY, SentimentPriceXPriceY, NormSentimentNormPriceXPriceY, TwitterSentimentVolumePriceXPriceY
-
+from dataset_loaders import NormSentimentAllPriceXPriceY
 class Config:
     def __init__(self):
         self.train_start_date = '2014-01-01'
@@ -18,14 +19,15 @@ class Config:
 
         self.loss_func = nn.CrossEntropyLoss
         self.optimizer = optim.Adam
-        self.model = Shallow_First_GRU
+        self.model = GRU_Shallow_1fc_AntiOverfit
         self.dataloader = TwitterSentimentVolumePriceXPriceY
         self.weighted_loss = False
 
         self.EPOCHS = 60
         self.BATCH_SIZE = 32
         self.num_workers = 16
-        self.LEARNING_RATE = 0.0001
+        self.LEARNING_RATE = 0.0019470067462017578
+        self.p_dropout = 0.2
 
         self.vocab_size = 30_522
         self.vocab_method = 'bert_base_uncased pretrained tokenizer with 30522 vocab size'
