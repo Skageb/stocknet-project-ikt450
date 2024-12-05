@@ -8,8 +8,8 @@ from time import time
 from sklearn.metrics import f1_score, precision_score, recall_score, matthews_corrcoef
 
 from config import cfg
-from dataset_loaders import TweetXPriceY
-from models import LSTM_v1, Two_Layer_LSTM, Shallow_First_GRU, GRU_Deep, GRU_shallow, GRU_Shallow_1fc, GRU_Shallow_2fc, GRU_Shallow_3fc
+from dataset_loaders_refactored import TwitterSentimentVolumePriceXPriceY, NormSentimentNormPriceXPriceY
+from models import LSTM_4_FC_3, BILSTM_4_FC_3, RNN_4_FC_3, GRU_4_FC_3
 from utils import write_log_to_file, log_config, generate_training_plot_from_file, logable_config
 import numpy as np
 
@@ -26,7 +26,7 @@ def evaluate_model(dataloader, model):
     all_targets = []
 
     with torch.no_grad():
-        for batch_idx, (x, y) in enumerate(tqdm(dataloader)):
+        for batch_idx, (x, y) in enumerate(dataloader):
             if isinstance(x, list):
                 x = [t.to(device) for t in x]
                 x = [t.float() for t in x]
@@ -87,13 +87,13 @@ def train(model, cfg, train_data, train_dataloader, eval_dataloader, trial=None)
     loss_across_epochs = []
     training_time = []
 
-    for epoch in range(EPOCHS):
+    for epoch in tqdm(range(EPOCHS)):
         epoch_start_time = time()
         epoch_loss = 0
         total, correct = 0, 0
         model.train()
 
-        for batch_idx, (x, y) in enumerate(tqdm(train_dataloader)):
+        for batch_idx, (x, y) in enumerate(train_dataloader):
             if isinstance(x, list):
                 x = [t.to(device) for t in x]
                 x = [t.float() for t in x]
@@ -173,13 +173,21 @@ def train(model, cfg, train_data, train_dataloader, eval_dataloader, trial=None)
 
 def objective(trial):
     # Suggest hyperparameters
-    learning_rate = trial.suggest_float('LEARNING_RATE', 1e-6, 1e-2)
+    learning_rate = trial.suggest_float('LEARNING_RATE', 5e-4, 5e-3)
+    #model = trial.suggest_categorical('MODEL', ['GRU_4_FC_3', 'LSTM_4_FC_3', 'BILSTM_4_FC_3', 'RNN_4_FC_3'])
+    p_dropout = trial.suggest_categorical('P_DROPOUT', [0.1, 0.2, 0.3, 0.4, 0.5])
     #day_lag = trial.suggest_int('day_lag', 3, 7)
     #tweets_per_day = trial.suggest_int('tweets_per_day', 2, 5)
     #words_per_tweet = trial.suggest_int('words_per_tweet', 15, 50)
+
+    #model_dict = {'GRU_4_FC_3': GRU_4_FC_3, 'LSTM_4_FC_3': LSTM_4_FC_3, 'BILSTM_4_FC_3': BILSTM_4_FC_3, 'RNN_4_FC_3': RNN_4_FC_3}
+    #model_class = model_dict[model]
     
     # Update configuration
     cfg.LEARNING_RATE = learning_rate
+    #cfg.model = model_class
+    cfg.p_dropout = p_dropout
+
     #cfg.dataset_loader_args['day_lag'] = day_lag
     #cfg.dataset_loader_args['tweets_per_day'] = tweets_per_day
     #cfg.dataset_loader_args['words_per_tweet'] = words_per_tweet
@@ -261,31 +269,66 @@ if __name__ == '__main__':
 
     # Create a storage URL for the SQLite database
     storage_name = 'sqlite:///Stocknet.db'
-    for model in [GRU_Shallow_2fc, GRU_Shallow_3fc]:#[GRU_shallow, GRU_Deep]:
-        cfg.model = model
-        #Create Optuna study
-        pruner = optuna.pruners.MedianPruner(
-            n_startup_trials=2, n_warmup_steps=7, interval_steps=5
-        )
-        study = optuna.create_study(
-            study_name=f"model_{cfg.model.__name__}_dataset_{cfg.dataloader.__name__}",
-            direction='maximize',  # or 'minimize' depending on your objective
-            #pruner=pruner,
-            storage=storage_name,
-            load_if_exists=True  # Load the study if it already exists
-        )
+    
 
-        # Run optimization
-        study.optimize(objective, n_trials=10)
+    #Create Optuna study
+    pruner = optuna.pruners.MedianPruner(
+        n_startup_trials=10, n_warmup_steps=7, interval_steps=5
+    )
+    study = optuna.create_study(
+        study_name=f"ISOLATED_{cfg.model.__name__}_dataset_{cfg.dataloader.__name__}",
+        direction='maximize',  # or 'minimize' depending on your objective
+        #pruner=pruner,
+        storage=storage_name,
+        load_if_exists=True  # Load the study if it already exists
+    )
 
-        print(f"Number of trials after optimization: {len(study.trials)}")
+    # Run optimization
+    study.optimize(objective, n_trials=20)
 
-        # Print the best trial
-        print("Best trial:")
-        trial = study.best_trial
+    print(f"Number of trials after optimization: {len(study.trials)}")
 
-        print(f"  Validation Loss: {trial.value}")
-        print("  Hyperparameters:")
-        for key, value in trial.params.items():
-            print(f"    {key}: {value}")
+    # Print the best trial
+    print("Best trial:")
+    trial = study.best_trial
+
+    print(f"  Validation Loss: {trial.value}")
+    print("  Hyperparameters:")
+    for key, value in trial.params.items():
+        print(f"    {key}: {value}")
+
+    cfg.model = LSTM_4_FC_3
+
+    # Set device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Create a storage URL for the SQLite database
+    storage_name = 'sqlite:///Stocknet.db'
+    
+
+    #Create Optuna study
+    pruner = optuna.pruners.MedianPruner(
+        n_startup_trials=10, n_warmup_steps=7, interval_steps=5
+    )
+    study = optuna.create_study(
+        study_name=f"ISOLATED_{cfg.model.__name__}_dataset_{cfg.dataloader.__name__}",
+        direction='maximize',  # or 'minimize' depending on your objective
+        #pruner=pruner,
+        storage=storage_name,
+        load_if_exists=True  # Load the study if it already exists
+    )
+
+    # Run optimization
+    study.optimize(objective, n_trials=20)
+
+    print(f"Number of trials after optimization: {len(study.trials)}")
+
+    # Print the best trial
+    print("Best trial:")
+    trial = study.best_trial
+
+    print(f"  Validation Loss: {trial.value}")
+    print("  Hyperparameters:")
+    for key, value in trial.params.items():
+        print(f"    {key}: {value}")
         

@@ -7,6 +7,7 @@ import inspect
 def log_results(experiment_name:str, log_obj:dict):
     '''experiment_name is the name the file will be stored with. Suggested as f"model_{model_class}_dataset_{dataset_class}". The name gets "_{id}.json" appended'''
     root = 'results/'
+    
     result_dir = os.path.join(root, experiment_name)
     os.makedirs(result_dir)
 

@@ -413,13 +413,13 @@ class NormSentimentAllPriceXPriceY(Dataset):
                 open_price = row['Open'].values[0]
                 high_price = row['High'].values[0]
                 low_price = row['Low'].values[0]
-                #close_price = row['Close'].values[0]
+                close_price = row['Close'].values[0]
                 volume = row['Volume'].values[0]
 
                 movement_percent = (movement_percent - self.movement_mean) / self.movement_std
                 volume = (volume - self.volume_mean) / self.volume_std
 
-                price_features = [movement_percent, open_price, high_price, low_price, volume]
+                price_features = [movement_percent, open_price, high_price, low_price, close_price, volume]
             else:
                 # Handle missing data by inserting zeros or previous valid data
                 price_features = [0, 0, 0, 0, 0, 0]
