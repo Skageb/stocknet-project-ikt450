@@ -982,7 +982,131 @@ def debug_dataset(dataset, num_samples=5):
     
     print("\n### End of Dataset Debug Information ###")
 
-                    
+class RegressionPriceAndSentiment(Dataset):
+    '''Dataset loader. The data used is twitter sentiment and price movements with all available stock except close over the last five days'''
+    def __init__(self, start_date, end_date, day_lag:int, tweets_per_day:int, words_per_tweet:int, twitter_root:str, price_root:str, **kwargs) -> None:
+        self.tweet_dir = twitter_root
+        self.price_dir = price_root
+        self.day_lag = day_lag
+        self.start_date = get_date_from_difference(start_date, day_lag)
+        self.end_date = end_date
+
+        self.n_twitter_features = 2
+        self.n_price_features = 5
+
+        self.words_per_tweet = words_per_tweet
+
+        self.dataset_cols = ['Sentiment', 'Twitter_Volume', 'Movement_Percent', 'Open', 'High', 'Low', 'Volume']
+
+        # Prepare dataset.
+        self.__prepare_dataset__()
+
+    def get_all_values_trading_date_interval_tweet(self) -> tuple:
+        '''Helper function to extract all values from tweets following the interval [prior_trading_date, current_trading_date)'''
+        all_values_tuple = [[], []]  # [[sentiments], [twitter_vols]]
+        for stock_name in os.listdir(self.tweet_dir):  # For all stocks
+            stock_tweet_dir = os.path.join(self.tweet_dir, stock_name)
+            for idx, trading_date in enumerate(self.trading_dates_stock_dict[stock_name][1:]):  # For all trading dates with prior trading dates
+                tweet_dates_for_trading_date = twitter_dates_from_trading_date(trading_date, self.trading_dates_stock_dict[stock_name])
+
+                sentiments = []
+                tweet_vol = 0
+                for tweet_date in tweet_dates_for_trading_date:  # For all dates since last trading day
+                    if f'{tweet_date}.json' in os.listdir(stock_tweet_dir):
+                        with open(os.path.join(stock_tweet_dir, f'{tweet_date}.json'), 'r') as f:
+                            tweets = json.load(f)
+                            sentiments += [tweet['sentiment'] for tweet in tweets]
+                            tweet_vol += len(tweets)
+                    else:
+                        sentiments += [3]
+                sentiment = np.mean(sentiments)
+                all_values_tuple[0].append(sentiment)
+                all_values_tuple[1].append(min(tweet_vol, 20))
+        return all_values_tuple
+
+    def get_twitter_data(self, tweet_dates_for_trading_date, stock_name):
+        stock_tweet_dir = os.path.join(self.tweet_dir, stock_name)
+        vol = 0
+        sentiments = []
+        for tweet_date in tweet_dates_for_trading_date:
+            if f'{tweet_date}.json' in os.listdir(stock_tweet_dir):
+                with open(os.path.join(stock_tweet_dir, f'{tweet_date}.json'), 'r') as f:
+                    tweets = json.load(f)
+                    sentiments += [tweet['sentiment'] for tweet in tweets]
+                    vol += len(tweets)
+        average_sentiment = np.mean(sentiments) if len(sentiments) > 0 else None
+        return [average_sentiment, min(vol, 20)]
+
+    def __prepare_dataset__(self):
+        """Prepares a list of (stock_name, target_date) pairs for indexing and gets all feature values."""
+        self.data_samples = collect_stock_date_pairs(self.start_date, self.end_date, self.day_lag, self.price_dir)
+
+        # Create dict of all available trading dates for each stock
+        self.all_stocks = list({stock_name for stock_name, _ in self.data_samples})
+        self.trading_dates_stock_dict = {stock: get_all_stock_trading_dates(stock, self.price_dir) for stock in self.all_stocks}
+
+        # Extract all feature values
+        self.all_price_values = get_all_values_price(self.dataset_cols[self.n_twitter_features:], self.data_samples, self.price_dir)
+
+        self.all_twitter_values = self.get_all_values_trading_date_interval_tweet()
+
+    def __getitem__(self, idx):
+        stock_name, target_date = self.data_samples[idx]
+        target_date_obj = pd.to_datetime(target_date)
+
+        stock_price_df = pd.read_csv(os.path.join(self.price_dir, f'{stock_name}.csv'))
+        stock_price_df['Date'] = pd.to_datetime(stock_price_df['Date'])
+
+        available_trading_days = self.trading_dates_stock_dict[stock_name]
+        target_idx = available_trading_days.index(target_date_obj)
+
+        twitter_sequence = []
+        price_sequence = []
+
+        dates_in_lag = available_trading_days[target_idx - self.day_lag: target_idx]
+
+        for prior_date in dates_in_lag:
+            prior_trade_date_obj = pd.to_datetime(prior_date)
+            row = stock_price_df.loc[stock_price_df['Date'] == prior_trade_date_obj]
+            if not row.empty:
+                price_features = [
+                    row['Movement_Percent'].values[0],
+                    row['Open'].values[0],
+                    row['High'].values[0],
+                    row['Low'].values[0],
+                    row['Volume'].values[0]
+                ]
+            else:
+                price_features = [0, 0, 0, 0, 0]
+
+            price_sequence.append(price_features)
+
+            twitter_dates = twitter_dates_from_trading_date(trading_date=prior_trade_date_obj, all_stock_trading_dates=self.trading_dates_stock_dict[stock_name])
+            twitter_data = self.get_twitter_data(tweet_dates_for_trading_date=twitter_dates, stock_name=stock_name)
+
+            if twitter_data[0] is None:
+                twitter_data[0] = 3.0
+
+            twitter_sequence.append(twitter_data)
+
+        assert len(twitter_sequence) == self.day_lag
+
+        twitter_sequence = torch.tensor(np.array(twitter_sequence), dtype=torch.float32).squeeze()
+        price_sequence = torch.tensor(np.array(price_sequence), dtype=torch.float32).squeeze()
+
+        x = (twitter_sequence, price_sequence)
+
+        # Ensure target y is a float tensor
+        y_movement = stock_price_df.loc[stock_price_df['Date'] == target_date_obj, 'Movement_Percent'].values[0]
+        y = torch.tensor(y_movement, dtype=torch.float32)  # Change dtype to torch.float32
+
+        return x, y
+
+    def get_input_size(self):
+        return (self.n_twitter_features, self.n_price_features)
+
+    def __len__(self):
+        return len(self.data_samples)      
 
 if __name__ == '__main__':
     dataset_class = TwitterSentimentVolumePriceXPriceY
